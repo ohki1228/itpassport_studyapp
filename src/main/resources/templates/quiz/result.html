@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${modeLabel} + ' 結果 | ITパスポート学習'">結果</title>
+    <script>
+        (function () {
+            var saved = localStorage.getItem("theme");
+            if (saved !== "light") {
+                document.documentElement.setAttribute("data-theme", "dark");
+            }
+        })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/nav :: nav}"></div>
+<main class="container">
+    <div class="card">
+        <h1 th:text="${modeLabel} + ' 結果'">結果</h1>
+        <p>回答数: <strong th:text="${result.answeredCount()}">0</strong>問 /
+           正解数: <strong th:text="${result.correctCount()}">0</strong>問 /
+           正答率: <strong th:text="${#numbers.formatDecimal(result.accuracy(), 1, 1)} + '%'">0.0%</strong></p>
+        <p>
+            <a class="btn" th:href="@{'/quiz/' + ${mode} + '/start'}">もう一度挑戦する</a>
+            <a class="btn btn-secondary" th:href="@{/}">ホームに戻る</a>
+        </p>
+    </div>
+
+    <div class="card">
+        <h2>ジャンル別結果</h2>
+        <table>
+            <thead>
+            <tr><th>ジャンル</th><th>回答数</th><th>正答率</th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="b : ${result.genreBreakdown()}">
+                <td th:text="${b.genre().name}">ジャンル名</td>
+                <td th:text="${b.totalCount()}">0</td>
+                <td th:text="${#numbers.formatDecimal(b.accuracy(), 1, 1)} + '%'">0.0%</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card" th:if="${!#lists.isEmpty(result.wrongAnswers())}">
+        <h2>間違えた問題の復習</h2>
+        <div th:each="wrong : ${result.wrongAnswers()}" style="margin-bottom:1.5rem; border-bottom:1px solid #e2e2e2; padding-bottom:1rem;">
+            <h3 style="white-space: pre-wrap;" th:text="${wrong.question.questionText}">問題文</h3>
+            <div th:replace="~{fragments/question-table :: table(${wrong.question.tableRows})}"></div>
+            <p th:if="${wrong.question.source}" style="color:#888; font-size:0.85rem;" th:text="${wrong.question.source}">出典</p>
+            <ul class="choice-list">
+                <li th:each="choice, choiceStat : ${wrong.question.choices}">
+                    <div th:class="${choice.correct}
+                                     ? ((${wrong.selectedChoiceNumbers.contains(choice.choiceNumber)} or ${wrong.question.answerType.name() == 'SINGLE'}) ? 'choice-correct' : 'choice-missed')
+                                     : (${wrong.selectedChoiceNumbers.contains(choice.choiceNumber)} ? 'choice-incorrect' : '')"
+                         style="padding:0.6rem; border:1px solid #d0d5dc; border-radius:6px; margin-bottom:0.3rem;">
+                        <strong th:text="${{'①','②','③','④'}[choiceStat.index] + ' ' + choice.content}">選択肢</strong>
+                        <span th:if="${wrong.selectedChoiceNumbers.contains(choice.choiceNumber)}">(あなたの回答)</span>
+                        <span th:if="${choice.correct and !wrong.selectedChoiceNumbers.contains(choice.choiceNumber) and wrong.question.answerType.name() == 'MULTIPLE'}">(見逃し)</span>
+                        <p th:text="${choice.explanation}">解説</p>
+                    </div>
+                </li>
+            </ul>
+            <p><strong>解説: </strong><span th:text="${wrong.question.explanation}">全体解説</span></p>
+        </div>
+    </div>
+</main>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<table th:fragment="table(rows)" th:if="${!#lists.isEmpty(rows)}" style="margin-top:0.8rem; max-width:480px;">
+    <tr th:each="row, rowIter : ${rows}">
+        <th:block th:each="cell : ${row}">
+            <th th:if="${rowIter.first}" th:text="${cell}">見出し</th>
+            <td th:unless="${rowIter.first}" th:text="${cell}">セル</td>
+        </th:block>
+    </tr>
+</table>
+</body>
+</html>

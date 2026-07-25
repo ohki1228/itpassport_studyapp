@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${modeLabel} + ' | ITパスポート学習'">演習</title>
+    <script>
+        (function () {
+            var saved = localStorage.getItem("theme");
+            if (saved !== "light") {
+                document.documentElement.setAttribute("data-theme", "dark");
+            }
+        })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/nav :: nav}"></div>
+<main class="container">
+    <div class="card">
+        <p th:if="${correct}" class="result-correct">正解です！</p>
+        <p th:unless="${correct}" class="result-incorrect">不正解です</p>
+
+        <h2 style="white-space: pre-wrap;" th:text="${question.questionText}">問題文</h2>
+        <div th:replace="~{fragments/question-table :: table(${question.tableRows})}"></div>
+        <p th:if="${question.source}" style="color:#888; font-size:0.85rem;" th:text="${question.source}">出典</p>
+
+        <ul class="choice-list">
+            <li th:each="choice, choiceStat : ${question.choices}">
+                <div th:class="${correctChoiceNumbers.contains(choice.choiceNumber)}
+                                 ? ((${selectedChoiceNumbers.contains(choice.choiceNumber)} or ${question.answerType.name() == 'SINGLE'}) ? 'choice-correct' : 'choice-missed')
+                                 : (${selectedChoiceNumbers.contains(choice.choiceNumber)} ? 'choice-incorrect' : '')"
+                     style="padding:0.8rem; border:1px solid #d0d5dc; border-radius:6px; margin-bottom:0.4rem;">
+                    <strong th:text="${{'①','②','③','④'}[choiceStat.index] + ' ' + choice.content}">選択肢</strong>
+                    <span th:if="${selectedChoiceNumbers.contains(choice.choiceNumber)}">(あなたの回答)</span>
+                    <span th:if="${correctChoiceNumbers.contains(choice.choiceNumber) and !selectedChoiceNumbers.contains(choice.choiceNumber) and question.answerType.name() == 'MULTIPLE'}">(見逃し)</span>
+                    <p th:text="${choice.explanation}">この選択肢の解説</p>
+                </div>
+            </li>
+        </ul>
+
+        <div class="card" style="background:#f0f4f8;">
+            <strong>解説</strong>
+            <p th:text="${question.explanation}">全体解説</p>
+        </div>
+
+        <p style="margin-top:1.5rem;">
+            <a th:if="${!finished}" class="btn" th:href="@{'/quiz/' + ${mode} + '/question'}">次の問題へ</a>
+            <a th:if="${finished}" class="btn" th:href="@{'/quiz/' + ${mode} + '/result'}">結果を見る</a>
+        </p>
+    </div>
+</main>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

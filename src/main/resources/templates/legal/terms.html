@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>利用規約 | ITパスポート学習</title>
+    <script>
+        (function () {
+            var saved = localStorage.getItem("theme");
+            if (saved !== "light") {
+                document.documentElement.setAttribute("data-theme", "dark");
+            }
+        })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/nav :: nav}"></div>
+<main class="container">
+    <div class="card">
+        <h1>利用規約</h1>
+        <p class="revision-date">最終改定日: 2026年7月1日</p>
+        <p>本規約は、「ITパスポート学習アプリ」(以下「本サービス」)の利用条件を定めるものです。
+            本サービスをご利用いただいた場合、本規約に同意したものとみなします。</p>
+
+        <h2>第1条(本サービスについて)</h2>
+        <p>本サービスは、ITパスポート試験の学習を支援することを目的とした、個人開発によるポートフォリオ作品です。
+            商用サービスとしての品質・可用性を保証するものではありません。</p>
+
+        <h2>第2条(内容の正確性)</h2>
+        <p>本サービスで提供する問題・解説等の学習コンテンツについて、正確性・完全性を保証するものではありません。
+            実際の試験対策としては、公式テキスト等と併せてご利用ください。</p>
+
+        <h2>第3条(禁止事項)</h2>
+        <p>利用者は、本サービスの利用にあたり、以下の行為をしてはならないものとします。</p>
+        <ul>
+            <li>法令または公序良俗に違反する行為</li>
+            <li>本サービスの運営を妨害する行為</li>
+            <li>不正アクセスその他不正な手段によるサーバー・データへのアクセス</li>
+        </ul>
+
+        <h2>第4条(免責事項)</h2>
+        <p>本サービスの利用により利用者に生じた損害について、開発者は責任を負わないものとします。
+            本サービスは、予告なく内容の変更、提供の停止・終了を行う場合があります。</p>
+
+        <h2>第5条(退会)</h2>
+        <p>利用者は、アカウント削除機能によりいつでも本サービスの利用を終了できます。
+            アカウント削除を行うと、回答履歴を含む利用者のデータは完全に削除され、復元することはできません。</p>
+
+        <h2>第6条(規約の変更)</h2>
+        <p>本規約は、必要に応じて予告なく変更されることがあります。変更した場合は、本ページ上部の最終改定日を更新します。</p>
+    </div>
+</main>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

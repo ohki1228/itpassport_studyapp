@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>実践演習 | ITパスポート学習</title>
+    <script>
+        (function () {
+            var saved = localStorage.getItem("theme");
+            if (saved !== "light") {
+                document.documentElement.setAttribute("data-theme", "dark");
+            }
+        })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/nav :: nav}"></div>
+<main class="container">
+    <div class="card">
+        <h1>実践演習</h1>
+        <p>本番形式に近い演習です。</p>
+        <ul>
+            <li>問題数: 100問(ストラテジ系35問・マネジメント系20問・テクノロジ系45問。データが不足している場合は用意できた分のみ出題)</li>
+            <li>制限時間: 120分</li>
+            <li>回答中は正誤を表示しません。終了後にまとめて採点し、解説を表示します。</li>
+            <li>一度回答すると前の問題には戻れません。</li>
+        </ul>
+        <form method="post" th:action="@{/mock-exam/start}">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <button class="btn" type="submit">開始する</button>
+        </form>
+    </div>
+</main>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

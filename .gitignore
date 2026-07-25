@@ -1,0 +1,16 @@
+target/
+*.class
+
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+
+.env
+.DS_Store
+*.log
+
+# 著作権のある過去問PDF等。git管理・共有はしない
+/past-exams/

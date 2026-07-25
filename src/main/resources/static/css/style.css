@@ -157,6 +157,10 @@ main.container a:not(.btn):not(.menu-item):visited {
     transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
+.explanation-card {
+    background: var(--surface-alt);
+}
+
 .card::before {
     content: "";
     position: absolute;
